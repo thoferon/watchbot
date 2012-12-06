@@ -1,6 +1,6 @@
-(ns watchbot.core)
+(ns watchbot.core
+  (:require [watchbot.server]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn -main [& args]
+  (println "Starting web server on port 8090...")
+  (watchbot.server/start-server 8090))
