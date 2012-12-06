@@ -1,4 +1,4 @@
 {
-    "name": "Basic CouchApp",
-    "description": "CouchApp with changes feed and form support."
+    "name": "API for watchbot",
+    "description": "This couchapp defines the API used by watchbot to access the data"
 }
