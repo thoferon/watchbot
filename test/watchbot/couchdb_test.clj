@@ -39,3 +39,28 @@
       (find-doc "some-uuid") => nil
       (provided
         (request :get "/some-uuid") => {:error "not_found" :reason "missing"}))
+
+(fact "save-doc generates an _id if not present"
+      (save-doc {}) => (contains {:_id "blah"})
+      (provided
+        (generate-uuid) => "blah"
+        (request :put "/blah" {:_id "blah"}) => {:_id "blah"}))
+
+(fact "save-doc returns the new document"
+      (let [doc             {:attribute "stuff" :type "mock" :_id "blah"}
+            revision        "1-adas4f6s5f468s"
+            second-revision "2-5sd4f5aa5as6"
+            url-with-rev    (str "/blah?rev=" revision)
+            saved-doc       (assoc doc :_rev revision)
+            saved-again-doc (assoc doc :_rev second-revision)]
+
+        (save-doc doc) => saved-doc
+        (provided
+          (request :put "/blah" doc) => {:ok "true" :rev revision})
+
+        (save-doc saved-doc) => saved-again-doc
+        (provided
+          (request :put url-with-rev saved-doc) => {:ok "true" :rev second-revision})
+
+        ;; TODO: test when revision is wrong, i.e. conflict
+        ))

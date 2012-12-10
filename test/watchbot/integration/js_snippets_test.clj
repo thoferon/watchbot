@@ -6,8 +6,17 @@
   (:require [watchbot.couchdb :as db]))
 
 (wrap-integration-tests
-  (fact "The application returns JS snippets when accessed with URLs such as /a, /b, /c, ..."
-        (:body (send-request "/a")) => (contains "/* Javascript Snippet */")
-        (against-background (before :facts (db/request :put "/a" {:_id "e" :code "/* Javascript Snippet */"}))))
+  (against-background [(before :facts (db/request :put "/a" {:_id "e" :code "/* Javascript Snippet */"}))]
 
-  (future-fact "Showing a JS snippet creates a new record in the database"))
+    (fact "The application returns JS snippets when accessed with URLs such as /a, /b, /c, ..."
+          (:body (send-request "/a")) => (contains "/* Javascript Snippet */"))
+
+    (fact "Showing a JS snippet creates a new record in the database and add the ID in the snippet"
+          (let [uuid "js-snippet-generates-record-test"]
+
+            (:body (send-request "/a")) => (contains (str "var alert_id = \"" uuid "\";"))
+            (provided
+              (db/generate-uuid) => uuid)
+
+            (db/find-doc uuid) => (contains {:type "alert"})
+            ))))

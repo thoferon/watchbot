@@ -21,3 +21,16 @@
 (defn find-doc [id]
   (let [response (request :get (str "/" id))]
     (when-not (= (:error response) "not_found") response)))
+
+(defn generate-uuid []
+  (str (java.util.UUID/randomUUID)))
+
+(defn save-doc [doc]
+  (let [_id  (or (:_id doc) (generate-uuid))
+        _rev (:_rev doc)
+        ndoc (assoc doc :_id _id)
+        path (if _rev (str "/" _id "?rev=" _rev) (str "/" _id))
+
+        response (request :put path ndoc)]
+
+    (assoc ndoc :_rev (:rev response))))
