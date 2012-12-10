@@ -3,7 +3,8 @@
         [midje.sweet]
         [noir.util.test])
   (:require [watchbot.models.snippet]
-            [watchbot.models.alert]))
+            [watchbot.models.alert]
+            [noir.request]))
 
 (fact "GET /:id returns the snippet corresponding in the database"
       (:body (send-request "/a")) => (contains "/* Javascript Snippet */")
@@ -11,4 +12,7 @@
 
       (against-background
         (watchbot.models.snippet/snippet-for "a") => "/* Javascript Snippet */"
-        (watchbot.models.alert/create "a")        => {:_id "uuid"}))
+        (noir.request/ring-request) => ...ring-request...
+        (watchbot.models.alert/create :snippet-id   "a"
+                                      :ring-request ...ring-request...)
+          => {:_id "uuid"}))

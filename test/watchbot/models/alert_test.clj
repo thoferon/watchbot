@@ -5,6 +5,6 @@
 
 (fact "create creates a new alert in the DB"
       (let [uuid "blah"]
-        (create "a") => {}
+        (create :key1 "a" :key2 "b") => {:_id "blah"}
         (provided
-          (db/save-doc {:snippet-id "a" :type "alert"}) => {})))
+          (db/save-doc {:key1 "a" :key2 "b" :type "alert"}) => {:_id "blah"})))
