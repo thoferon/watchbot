@@ -12,7 +12,7 @@
 
       (against-background
         (watchbot.models.snippet/snippet-for "a") => "/* Javascript Snippet */"
-        (noir.request/ring-request) => ...ring-request...
+        (noir.request/ring-request) => {}
         (watchbot.models.alert/create :snippet-id   "a"
-                                      :ring-request ...ring-request...)
+                                      :ring-request {})
           => {:_id "uuid"}))

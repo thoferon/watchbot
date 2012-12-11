@@ -6,11 +6,11 @@
 
 (defpage
   "/:id"
-  {:keys [id] :as x}
+  {:keys [id]}
 
   (str
     "var alert_id = \""
     (:_id (alert/create :snippet-id   id
-                        :ring-request (noir.request/ring-request)))
+                        :ring-request (dissoc (noir.request/ring-request) :body)))
     "\";\n"
     (snippet/snippet-for id)))
