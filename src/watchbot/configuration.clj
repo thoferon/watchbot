@@ -1,4 +1,4 @@
 (ns watchbot.configuration)
 
 (def database-url
-    (or (System/getenv "CLOUDANT_URL") "http://localhost:5984/watchbot"))
+    (or (str (System/getenv "CLOUDANT_URL") "/watchbot")  "http://localhost:5984/watchbot"))
