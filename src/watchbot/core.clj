@@ -2,5 +2,5 @@
   (:use [watchbot.handler]
         [ring.adapter.jetty]))
 
-(defn -main [& args]
-  (run-jetty app {:port 80}))
+(defn -main [port]
+  (run-jetty app {:port (Integer. port)}))
