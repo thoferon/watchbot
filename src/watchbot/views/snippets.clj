@@ -1,16 +1,11 @@
 (ns watchbot.views.snippets
   (:require [watchbot.models.snippet :as snippet]
-            [watchbot.models.alert   :as alert]
-            [noir.request])
-  (:use [noir.core]))
+            [watchbot.models.alert   :as alert]))
 
-(defpage
-  "/:id"
-  {:keys [id]}
-
+(defn show [{{:keys [id]} :params :as request}]
   (str
     "var alert_id = \""
     (:_id (alert/create :snippet-id   id
-                        :ring-request (dissoc (noir.request/ring-request) :body)))
+                        :ring-request (dissoc request :body)))
     "\";\n"
     (snippet/snippet-for id)))
