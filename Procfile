@@ -1,1 +1,1 @@
-web: lein with-profile production trampoline run -m watchbot.core $PORT
+web: lein trampoline run -m watchbot.core $PORT
